@@ -7,7 +7,7 @@ jobs:
     steps:
       - name: Hello world action step
         id: hello
-        uses: hatemhosny/gh-action-example@60eb9a9a3da9e20015448b82af594f6387833330
+        uses: hatemhosny/gh-action-example@02d4b503b852d10a99d4adb0379e7200bbc5dd68
         with:
           who-to-greet: "Mona the Octocat"
       # Use the output from the `hello` step
