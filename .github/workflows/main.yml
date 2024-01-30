@@ -13,6 +13,8 @@ jobs:
         uses: hatemhosny/gh-action-example@main
         with:
           who-to-greet: "Mona the Octocat"
+          install-command: "npm install"
+          build-command: "npm run build"
 
       # Use the output from the `hello` step
       - name: Get the output time
