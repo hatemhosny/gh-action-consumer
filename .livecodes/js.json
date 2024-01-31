@@ -9,6 +9,6 @@
     "content": "import { demo } from './dist/demo.js';\ndemo();"
   },
   "imports": {
-    "./dist/demo.js": "{{ LIVECODES::TO_URL(dist/demo.js) }}"
+    "./dist/demo.js": "{{ LIVECODES::TO_URL(dist/index.js) }}"
   }
 }
