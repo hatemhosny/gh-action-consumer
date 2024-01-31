@@ -45,6 +45,7 @@ jobs:
             const issue_number = fs.readFileSync("./NR", "utf8").trim();
             const output = fs.readFileSync(`./${issue_number}.md`, "utf8");
             async function run(issue_number, message) {
+            const REACTIONS = ['+1', '-1', 'laugh', 'confused', 'heart', 'hooray', 'rocket', 'eyes'];
             try {
                 const comment_tag = core.getInput("comment_tag");
                 const reactions = core.getInput("reactions");
