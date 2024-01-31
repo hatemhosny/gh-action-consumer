@@ -134,7 +134,7 @@ jobs:
 
                 if (comment_tag_pattern) {
                 let comment;
-                for await (const { data: comments } of octokit.paginate.iterator(
+                for await (const { data: comments } of github.paginate.iterator(
                     github.issues.listComments,
                     {
                     ...context.repo,
