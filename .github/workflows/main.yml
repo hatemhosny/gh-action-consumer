@@ -15,7 +15,7 @@ jobs:
           who-to-greet: "Mona the Octocat"
           install-command: "npm install"
           build-command: "npm run build"
-          file-map: "index.txt:dist/index.txt"
+          file-list: "dist/index.txt"
 
       # Use the output from the `hello` step
       - name: Get the output time
