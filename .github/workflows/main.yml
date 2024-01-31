@@ -5,12 +5,12 @@ on: [pull_request]
 jobs:
   build_and_prepare:
     runs-on: ubuntu-latest
-    name: Build and prepare
+    name: Generate Playgrounds
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Prepare
+      - name: Build and generate
         uses: hatemhosny/gh-action-example@main
         with:
           install-command: "npm install"
