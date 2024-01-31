@@ -58,7 +58,6 @@ jobs:
                 }
 
                 let content = message;
-                const context = github.context;
 
                 if (!issue_number) {
                 core.setFailed(
