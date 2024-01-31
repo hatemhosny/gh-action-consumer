@@ -40,7 +40,7 @@ jobs:
           github-token: ${{ github.token }}
           script: |
             var fs = require('fs');
-            var issue_number = fs.readFileSync('./NR', 'utf8');
+            var issue_number = fs.readFileSync('./NR', 'utf8').trim();
             var output = fs.readFileSync(`./${issue_number}.md`, 'utf8');
             await github.issues.createComment({
               owner: context.repo.owner,
