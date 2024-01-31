@@ -47,11 +47,10 @@ jobs:
             async function run(issue_number, message) {
             const REACTIONS = ['+1', '-1', 'laugh', 'confused', 'heart', 'hooray', 'rocket', 'eyes'];
             try {
-                const comment_tag = core.getInput("comment_tag");
-                const reactions = core.getInput("reactions");
-                const mode = core.getInput("mode");
-                const create_if_not_exists =
-                core.getInput("create_if_not_exists") === "true";
+                const comment_tag = `<!-- livecodes/thollander/actions-comment-pull-request -->`;
+                const reactions = "";
+                const mode = "upsert";
+                const create_if_not_exists = true;
 
                 if (!message) {
                 core.setFailed('"message" should be provided as input');
@@ -128,9 +127,7 @@ jobs:
                 return comment;
                 }
 
-                const comment_tag_pattern = comment_tag
-                ? `<!-- livecodes/thollander/actions-comment-pull-request "${comment_tag}" -->`
-                : null;
+                const comment_tag_pattern = comment_tag;
                 const body = comment_tag_pattern
                 ? `${content}\n${comment_tag_pattern}`
                 : content;
