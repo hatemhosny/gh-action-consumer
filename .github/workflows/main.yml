@@ -1,6 +1,6 @@
 name: livecodes
 
-on: [pull_request_target]
+on: [pull_request]
 
 jobs:
   hello_world_job:
@@ -16,6 +16,3 @@ jobs:
         with:
           install-command: "npm install"
           build-command: "npm run build"
-
-      - run: |
-          echo "The head of this PR: ${{ github.head_ref }}"
