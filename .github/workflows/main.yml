@@ -20,13 +20,6 @@ jobs:
           file-list: "dist/index.txt"
           GITHUB_TOKEN: ${{ github.token }}
 
-      - name: Comment PR with execution number
-        uses: thollander/actions-comment-pull-request@v2
-        with:
-          message: |
-            _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
-          comment_tag: execution
-
       # Use the output from the `hello` step
       - name: Get the output time
         run: echo "The time was ${{ steps.hello.outputs.time }}"
