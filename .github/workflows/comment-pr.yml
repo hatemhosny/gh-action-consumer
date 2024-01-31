@@ -60,7 +60,6 @@ jobs:
 
                     let content = message;
                     const context = github.context;
-                    const octokit = github.getOctokit(github_token);
 
                     if (!issue_number) {
                         core.setFailed('No issue/pull request in input neither in current context.');
@@ -75,7 +74,7 @@ jobs:
 
                     await Promise.allSettled(
                         validReactions.map(async (content) => {
-                        await octokit.rest.reactions.createForIssueComment({
+                        await github.reactions.createForIssueComment({
                             ...context.repo,
                             comment_id,
                             content,
@@ -90,7 +89,7 @@ jobs:
                     issue_number,
                     body,
                     }) {
-                    const { data: comment } = await octokit.rest.issues.createComment({
+                    const { data: comment } = await github.issues.createComment({
                         owner,
                         repo,
                         issue_number,
@@ -112,7 +111,7 @@ jobs:
                     comment_id,
                     body,
                     }) {
-                    const { data: comment } = await octokit.rest.issues.updateComment({
+                    const { data: comment } = await github.issues.updateComment({
                         owner,
                         repo,
                         comment_id,
@@ -129,7 +128,7 @@ jobs:
                     }
 
                     async function deleteComment({ owner, repo, comment_id }) {
-                    const { data: comment } = await octokit.rest.issues.deleteComment({
+                    const { data: comment } = await github.issues.deleteComment({
                         owner,
                         repo,
                         comment_id,
@@ -145,7 +144,7 @@ jobs:
 
                     if (comment_tag_pattern) {
                     let comment;
-                    for await (const { data: comments } of octokit.paginate.iterator(octokit.rest.issues.listComments, {
+                    for await (const { data: comments } of octokit.paginate.iterator(github.issues.listComments, {
                         ...context.repo,
                         issue_number,
                     })) {
@@ -201,3 +200,9 @@ jobs:
                 }
             }
             run(issue_number, 'received: ' + output);
+            await github.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              body: 
+            });
