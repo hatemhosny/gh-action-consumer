@@ -1,8 +1,8 @@
-name: Comment on the pull request
+name: Comment on pull request
 
 on:
   workflow_run:
-    workflows: ["livecodes"]
+    workflows: ["livecodes"] # the workflow that created the artifact
     types:
       - completed
 
