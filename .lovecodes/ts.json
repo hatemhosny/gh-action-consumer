@@ -1,0 +1,11 @@
+{
+  "title": "TypeScript Starter",
+  "markup": {
+    "language": "html",
+    "content": "<h1>Hello, World!</h1>"
+  },
+  "script": {
+    "language": "typescript",
+    "content": "console.log('Hello, World (from TS)!')"
+  }
+}

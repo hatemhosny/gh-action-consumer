@@ -1,0 +1,11 @@
+{
+  "title": "JavaScript Starter",
+  "markup": {
+    "language": "html",
+    "content": "<h1>Hello, World!</h1>"
+  },
+  "script": {
+    "language": "javascript",
+    "content": "console.log('Hello, World!')"
+  }
+}
