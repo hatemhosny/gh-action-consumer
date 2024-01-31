@@ -6,6 +6,6 @@
   },
   "script": {
     "language": "javascript",
-    "content": "console.log('Hello, World!')"
+    "content": "import { demo } from '{{ LIVECODES::TO_URL(./dist/index.js) }}';\ndemo();"
   }
 }
