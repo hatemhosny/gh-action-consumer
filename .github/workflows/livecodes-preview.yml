@@ -1,4 +1,4 @@
-name: Comment on pull request
+name: LiveCodes Preview
 
 on:
   workflow_run:
