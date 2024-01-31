@@ -41,168 +41,165 @@ jobs:
         with:
           github-token: ${{ github.token }}
           script: |
-            var fs = require('fs');
-            var issue_number = fs.readFileSync('./NR', 'utf8').trim();
-            var output = fs.readFileSync(`./${issue_number}.md`, 'utf8');
+            const fs = require("fs");
+            const issue_number = fs.readFileSync("./NR", "utf8").trim();
+            const output = fs.readFileSync(`./${issue_number}.md`, "utf8");
             async function run(issue_number, message) {
-                try {
-                    const github_token = core.getInput('GITHUB_TOKEN');
-                    const pr_number = core.getInput('pr_number');
-                    const comment_tag = core.getInput('comment_tag');
-                    const reactions = core.getInput('reactions');
-                    const mode = core.getInput('mode');
-                    const create_if_not_exists = core.getInput('create_if_not_exists') === 'true';
+            try {
+                const comment_tag = core.getInput("comment_tag");
+                const reactions = core.getInput("reactions");
+                const mode = core.getInput("mode");
+                const create_if_not_exists =
+                core.getInput("create_if_not_exists") === "true";
 
-                    if (!message) {
-                        core.setFailed('"message" should be provided as input');
-                        return;
-                    }
+                if (!message) {
+                core.setFailed('"message" should be provided as input');
+                return;
+                }
 
-                    let content = message;
-                    const context = github.context;
+                let content = message;
+                const context = github.context;
 
-                    if (!issue_number) {
-                        core.setFailed('No issue/pull request in input neither in current context.');
-                        return;
-                    }
+                if (!issue_number) {
+                core.setFailed(
+                    "No issue/pull request in input neither in current context.",
+                );
+                return;
+                }
 
-                    async function addReactions(comment_id, reactions) {
-                    const validReactions = reactions
-                        .replace(/\s/g, '')
-                        .split(',')
-                        .filter((reaction) => REACTIONS.includes(reaction));
+                async function addReactions(comment_id, reactions) {
+                const validReactions = reactions
+                    .replace(/\s/g, "")
+                    .split(",")
+                    .filter((reaction) => REACTIONS.includes(reaction));
 
-                    await Promise.allSettled(
-                        validReactions.map(async (content) => {
-                        await github.reactions.createForIssueComment({
-                            ...context.repo,
-                            comment_id,
-                            content,
-                        });
-                        }),
-                    );
-                    }
+                await Promise.allSettled(
+                    validReactions.map(async (content) => {
+                    await github.reactions.createForIssueComment({
+                        ...context.repo,
+                        comment_id,
+                        content,
+                    });
+                    }),
+                );
+                }
 
-                    async function createComment({
+                async function createComment({ owner, repo, issue_number, body }) {
+                const { data: comment } = await github.issues.createComment({
                     owner,
                     repo,
                     issue_number,
                     body,
-                    }) {
-                    const { data: comment } = await github.issues.createComment({
-                        owner,
-                        repo,
-                        issue_number,
-                        body,
-                    });
+                });
 
-                    core.setOutput('id', comment.id);
-                    core.setOutput('body', comment.body);
-                    core.setOutput('html_url', comment.html_url);
+                core.setOutput("id", comment.id);
+                core.setOutput("body", comment.body);
+                core.setOutput("html_url", comment.html_url);
 
-                    await addReactions(comment.id, reactions);
+                await addReactions(comment.id, reactions);
 
-                    return comment;
-                    }
+                return comment;
+                }
 
-                    async function updateComment({
+                async function updateComment({ owner, repo, comment_id, body }) {
+                const { data: comment } = await github.issues.updateComment({
                     owner,
                     repo,
                     comment_id,
                     body,
-                    }) {
-                    const { data: comment } = await github.issues.updateComment({
-                        owner,
-                        repo,
-                        comment_id,
-                        body,
-                    });
+                });
 
-                    core.setOutput('id', comment.id);
-                    core.setOutput('body', comment.body);
-                    core.setOutput('html_url', comment.html_url);
+                core.setOutput("id", comment.id);
+                core.setOutput("body", comment.body);
+                core.setOutput("html_url", comment.html_url);
 
-                    await addReactions(comment.id, reactions);
+                await addReactions(comment.id, reactions);
 
-                    return comment;
-                    }
+                return comment;
+                }
 
-                    async function deleteComment({ owner, repo, comment_id }) {
-                    const { data: comment } = await github.issues.deleteComment({
-                        owner,
-                        repo,
-                        comment_id,
-                    });
+                async function deleteComment({ owner, repo, comment_id }) {
+                const { data: comment } = await github.issues.deleteComment({
+                    owner,
+                    repo,
+                    comment_id,
+                });
 
-                    return comment;
-                    }
+                return comment;
+                }
 
-                    const comment_tag_pattern = comment_tag
-                    ? `<!-- livecodes/thollander/actions-comment-pull-request "${comment_tag}" -->`
-                    : null;
-                    const body = comment_tag_pattern ? `${content}\n${comment_tag_pattern}` : content;
+                const comment_tag_pattern = comment_tag
+                ? `<!-- livecodes/thollander/actions-comment-pull-request "${comment_tag}" -->`
+                : null;
+                const body = comment_tag_pattern
+                ? `${content}\n${comment_tag_pattern}`
+                : content;
 
-                    if (comment_tag_pattern) {
-                    let comment;
-                    for await (const { data: comments } of octokit.paginate.iterator(github.issues.listComments, {
-                        ...context.repo,
-                        issue_number,
-                    })) {
-                        comment = comments.find((comment) => comment?.body?.includes(comment_tag_pattern));
-                        if (comment) break;
-                    }
-
-                    if (comment) {
-                        if (mode === 'upsert') {
-                        await updateComment({
-                            ...context.repo,
-                            comment_id: comment.id,
-                            body,
-                        });
-                        return;
-                        } else if (mode === 'recreate') {
-                        await deleteComment({
-                            ...context.repo,
-                            comment_id: comment.id,
-                        });
-
-                        await createComment({
-                            ...context.repo,
-                            issue_number,
-                            body,
-                        });
-                        return;
-                        } else if (mode === 'delete') {
-                        core.debug('Registering this comment to be deleted.');
-                        } else {
-                        core.setFailed(`Mode ${mode} is unknown. Please use 'upsert', 'recreate' or 'delete'.`);
-                        return;
-                        }
-                    } else if (create_if_not_exists) {
-                        core.info('No comment has been found with asked pattern. Creating a new comment.');
-                    } else {
-                        core.info(
-                        'Not creating comment as the pattern has not been found. Use `create_if_not_exists: true` to create a new comment anyway.',
-                        );
-                        return;
-                    }
-                    }
-
-                    await createComment({
+                if (comment_tag_pattern) {
+                let comment;
+                for await (const { data: comments } of octokit.paginate.iterator(
+                    github.issues.listComments,
+                    {
                     ...context.repo,
                     issue_number,
-                    body,
+                    },
+                )) {
+                    comment = comments.find((comment) =>
+                    comment?.body?.includes(comment_tag_pattern),
+                    );
+                    if (comment) break;
+                }
+
+                if (comment) {
+                    if (mode === "upsert") {
+                    await updateComment({
+                        ...context.repo,
+                        comment_id: comment.id,
+                        body,
                     });
-                } catch (error) {
-                    if (error instanceof Error) {
-                    core.setFailed(error.message);
+                    return;
+                    } else if (mode === "recreate") {
+                    await deleteComment({
+                        ...context.repo,
+                        comment_id: comment.id,
+                    });
+
+                    await createComment({
+                        ...context.repo,
+                        issue_number,
+                        body,
+                    });
+                    return;
+                    } else if (mode === "delete") {
+                    core.debug("Registering this comment to be deleted.");
+                    } else {
+                    core.setFailed(
+                        `Mode ${mode} is unknown. Please use 'upsert', 'recreate' or 'delete'.`,
+                    );
+                    return;
                     }
+                } else if (create_if_not_exists) {
+                    core.info(
+                    "No comment has been found with asked pattern. Creating a new comment.",
+                    );
+                } else {
+                    core.info(
+                    "Not creating comment as the pattern has not been found. Use `create_if_not_exists: true` to create a new comment anyway.",
+                    );
+                    return;
+                }
+                }
+
+                await createComment({
+                ...context.repo,
+                issue_number,
+                body,
+                });
+            } catch (error) {
+                if (error instanceof Error) {
+                core.setFailed(error.message);
                 }
             }
-            run(issue_number, 'received: ' + output);
-            await github.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: issue_number,
-              body: 
-            });
+            }
+
+            run(issue_number, "received: " + output);
