@@ -6,6 +6,6 @@
   },
   "script": {
     "language": "javascript",
-    "content": "import { demo } from '{{ LIVECODES::TO_URL(dist/index.js) }}';\ndemo();"
+    "content": "import { demo } from '{{ LIVECODES::TO_URL(dist/demo.js) }}';\ndemo();"
   }
 }
