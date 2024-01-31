@@ -2,7 +2,7 @@
   "title": "JavaScript Starter",
   "markup": {
     "language": "html",
-    "content": "<h1>Hello, World!</h1>"
+    "content": "<h1>Hello, World!</h1><p>sha: {{ LIVECODES::SHA }}</p><p>branch: {{ LIVECODES::REF }}</p><p>repo: {{ LIVECODES::REPO }}</p>"
   },
   "script": {
     "language": "javascript",
