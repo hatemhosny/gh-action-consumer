@@ -2,13 +2,13 @@
   "title": "JavaScript Starter",
   "markup": {
     "language": "html",
-    "content": "<h1>Hello, World!</h1>\n<p>sha: {{ LIVECODES::SHA }}</p>\n<p>branch: {{ LIVECODES::REF }}</p>\n<p>repo: {{ LIVECODES::REPO }}</p>\n<link rel=\"stylesheet\" href=\"{{ LIVECODES::TO_URL(./dist/styles.css) }}\">"
+    "content": "<h1>Hello, World!</h1>\n<p>sha: {{ LIVECODES::SHA }}</p>\n<p>branch: {{ LIVECODES::REF }}</p>\n<p>repo: {{ LIVECODES::REPO }}</p>\n<link rel=\"stylesheet\" href=\"{{ LIVECODES::TO_DATA_URL(./dist/styles.css) }}\">"
   },
   "script": {
     "language": "javascript",
     "content": "import { demo } from './dist/demo.js';\ndemo();"
   },
   "imports": {
-    "./dist/demo.js": "{{ LIVECODES::TO_URL(./dist/demo.js) }}"
+    "./dist/demo.js": "{{ LIVECODES::TO_DATA_URL(./dist/demo.js) }}"
   }
 }
