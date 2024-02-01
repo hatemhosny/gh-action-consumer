@@ -5,5 +5,6 @@ if (!fs.existsSync("dist")) {
   fs.mkdirSync("dist");
 }
 
-// copy index.txt
+fs.copyFileSync("demo.js", "dist/demo.js");
 fs.copyFileSync("index.txt", "dist/index.txt");
+fs.copyFileSync("styles.css", "dist/styles.css");

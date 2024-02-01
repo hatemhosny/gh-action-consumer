@@ -2,10 +2,13 @@
   "title": "JavaScript Starter",
   "markup": {
     "language": "html",
-    "content": "<h1>Hello, World!</h1>"
+    "content": "<h1>Hello, World!</h1>\n<p>sha: {{ LC::SHA }}</p>\n<p>branch: {{ LC::REF }}</p>\n<p>repo: {{ LC::REPO }}</p>\n<link rel=\"stylesheet\" href=\"{{ LC::TO_URL(./dist/styles.css) }}\">"
   },
   "script": {
     "language": "javascript",
-    "content": "console.log('Hello, World!')"
+    "content": "import { demo } from './dist/demo.js';\ndemo();"
+  },
+  "imports": {
+    "./dist/demo.js": "{{ LC::TO_URL(./dist/demo.js) }}"
   }
 }
