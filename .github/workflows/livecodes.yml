@@ -15,4 +15,4 @@ jobs:
         with:
           install-command: "npm install"
           build-command: "npm run build"
-          base-url: "https://gh-action-consumer-git-{{LC::REF}}-hatem-hosnys-projects.vercel.app/"
+          base-url: "https://{{LC::REF}}.gh-action-consumer.pages.dev"
