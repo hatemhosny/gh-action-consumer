@@ -16,7 +16,6 @@ jobs:
       github.event.workflow_run.conclusion == 'success'
 
     steps:
-      - name: Post comment
-        uses: hatemhosny/gh-action-example2@main
+      - uses: hatemhosny/gh-action-example2@main
         with:
           GITHUB_TOKEN: ${{ github.token }}
