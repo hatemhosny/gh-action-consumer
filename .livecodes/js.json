@@ -2,7 +2,7 @@
   "title": "JavaScript Starter",
   "markup": {
     "language": "html",
-    "content": "<h1>Hello, World!</h1>\n<p>sha: {{LC::SHA}}</p>\n<p>branch: {{LC::REF}}</p>\n<p>repo: {{LC::REPO}}</p>\n<link rel=\"stylesheet\" href=\"{{LC::TO_DATA_URL(./dist/styles.css)}}\">"
+    "content": "<h1>Hello, World!</h1>\n<p>sha: {{LC::SHA}}</p>\n<p>short sha: {{LC::SHORT_SHA}}</p>\n<p>branch: {{LC::REF}}</p>\n<p>repo: {{LC::REPO}}</p>\n<link rel=\"stylesheet\" href=\"{{LC::TO_DATA_URL(./dist/styles.css)}}\">"
   },
   "script": {
     "language": "javascript",
@@ -10,5 +10,8 @@
   },
   "imports": {
     "./dist/demo.js": "{{LC::TO_DATA_URL(./dist/demo.js)}}"
+  },
+  "customSettings": {
+    "sha": "{{LC::SHORT_SHA}}"
   }
 }
