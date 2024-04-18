@@ -17,6 +17,6 @@ jobs:
 
     steps:
       - name: Post comment
-        uses: live-codes/pr-comment-from-artifact@v1
+        uses: ulrikstrid/pr-comment-from-artifact@patch-1
         with:
           GITHUB_TOKEN: ${{ github.token }}
